@@ -20,6 +20,13 @@ class ApiController extends Controller {
      */
     public function postAsk() {
 
+        $data = Input::all();
+        $ask = \App\Ask::withTrashed()
+            ->where('question_id', $data['question_id'])
+            ->get();
+        if(empty($ask)) {
+            $row = \App\Ask::creat($data);
+        }
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
     }
 
