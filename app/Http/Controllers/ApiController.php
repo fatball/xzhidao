@@ -20,7 +20,7 @@ class ApiController extends Controller {
      */
     public function postAsk() {
 
-        $data = Input::all();
+        $data = \Input::all();
         $ask = \App\Ask::withTrashed()
             ->where('question_id', $data['question_id'])
             ->get();
