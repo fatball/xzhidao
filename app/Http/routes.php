@@ -25,11 +25,11 @@ Route::group(['prefix' => 'api'], function () {
         'quality', #优质
         'reply' #回复
     ];
-    foreach($actions as $m) {
+    foreach ($actions as $m) {
         Route::post($m, [
-            'as' => 'api.'.$m,
+            'as' => 'api.' . $m,
             'middleware' => 'api',
-            'uses' => 'ApiController@post'.ucfirst($m)
+            'uses' => 'ApiController@post' . ucfirst($m)
         ]);
     }
 });

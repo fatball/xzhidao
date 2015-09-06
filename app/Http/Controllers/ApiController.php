@@ -1,14 +1,15 @@
 <?php
 
 /**
- * 
+ *
  *
  * @author Xu Qihua <qihuax@jumei.com>
  * @version 15/9/1
  */
 namespace App\Http\Controllers;
 
-class ApiController extends Controller {
+class ApiController extends Controller
+{
 
     /**
      * API接口-订阅接口-提问通知.
@@ -18,13 +19,14 @@ class ApiController extends Controller {
      * @link http://help.baidu.com/question?prod_en=zhidao&class=611&id=1001210
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postAsk() {
+    public function postAsk()
+    {
 
         $data = \Input::all();
         $ask = \App\Ask::withTrashed()
             ->where('question_id', $data['question_id'])
             ->get();
-        if(empty($ask)) {
+        if (empty($ask)) {
             $row = \App\Ask::creat($data);
         }
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
@@ -38,7 +40,8 @@ class ApiController extends Controller {
      * @link http://help.baidu.com/question?prod_en=zhidao&class=611&id=1001213
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postAppend() {
+    public function postAppend()
+    {
 
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
     }
@@ -51,7 +54,8 @@ class ApiController extends Controller {
      * @link http://help.baidu.com/question?prod_en=zhidao&class=611&id=1001212
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postComment() {
+    public function postComment()
+    {
 
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
     }
@@ -64,7 +68,8 @@ class ApiController extends Controller {
      * @link http://help.baidu.com/question?prod_en=zhidao&class=611&id=1001211
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postDelete() {
+    public function postDelete()
+    {
 
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
     }
@@ -77,12 +82,14 @@ class ApiController extends Controller {
      * @link http://help.baidu.com/question?prod_en=zhidao&class=611&id=1001644
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postQuality() {
+    public function postQuality()
+    {
 
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
     }
 
-    public function postReply() {
+    public function postReply()
+    {
 
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
     }

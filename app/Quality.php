@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Quality extends Model
 {
     use SoftDeletes;
+
     /**
      * The table associated with the model.
      *

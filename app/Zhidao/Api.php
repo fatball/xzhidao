@@ -2,40 +2,42 @@
 
 namespace App\Zhidao;
 
-class Api {
-    private $_host = '';
-    private $_appCfg = '';
+class Api
+{
+    private $host = '';
+    private $appCfg = '';
 
     /**
      * 构造函数，进行配置的初始化
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->_config = Config::get('api');
-        $this->_host = $this->_config['debug'] ? $this->_config['host']['test'] : $this->_config['host']['online'];
-        $this->_appCfg = array(
-            'appkey'      => $this->_config['app_key'],
+        $this->host = $this->_config['debug'] ? $this->_config['host']['test'] : $this->_config['host']['online'];
+        $this->appCfg = array(
+            'appkey' => $this->_config['app_key'],
             'securitykey' => $this->_config['app_security_key'],
         );
 
         if ($this->_config['app_key'] == '') {
-            $this->_writeLog("please fill the appkey in zhidao_conf.inc.php");
+            $this->writeLog("please fill the appkey in zhidao_conf.inc.php");
         }
 
         if ($this->_config['app_security_key'] == '') {
-            $this->_writeLog("please fill the securitykey in zhidao_conf.inc.php");
+            $this->writeLog("please fill the securitykey in zhidao_conf.inc.php");
         }
     }
 
     /**
      * 向百度知道开放平台提交回答（参数必须为utf8编码）
-     * @param string $questionid      必填，要回答的问题id
-     * @param string $content         必填，回答内容
-     * @param uint   $appUid          必填，您站点内的回答用户id
-     * @param string $appUname        必填，您站点内的回答用户名
-     * @param string $appUavatar      必填，您站点内的回答用户头像图片url
-     * @param string $appUprofile     必填，您站点内的回答用户个人主页url
-     * @param string $appUninterest   可选，您站点内的回答用户个人擅长点
-     * @param string $appUrl          可选，您站点内对应的问题页面url
+     * @param string $questionid 必填，要回答的问题id
+     * @param string $content 必填，回答内容
+     * @param uint $appUid 必填，您站点内的回答用户id
+     * @param string $appUname 必填，您站点内的回答用户名
+     * @param string $appUavatar 必填，您站点内的回答用户头像图片url
+     * @param string $appUprofile 必填，您站点内的回答用户个人主页url
+     * @param string $appUninterest 可选，您站点内的回答用户个人擅长点
+     * @param string $appUrl 可选，您站点内对应的问题页面url
      * @return array(
      *     'errno'  => 0,             本次提交成功与否，0成功，其他值失败
      *     'errmsg' => '',            本次提交的中文提示信息
@@ -45,64 +47,67 @@ class Api {
      *     )
      * )
      */
-    public function submitReply($questionid, $content, $appUid, $appUname, $appUavatar, $appUprofile, $appUninterest = '', $appUrl = '') {
+    public function submitReply($questionid, $content, $appUid, $appUname, $appUavatar, $appUprofile, $appUninterest = '', $appUrl = '')
+    {
         $data = array();
-        $data['questionid']    = trim($questionid);
-        $data['content']       = trim($content);
-        $data['app_uid']       = intval($appUid);
-        $data['app_uname']     = trim($appUname);
-        $data['app_uavatar']   = trim($appUavatar);
-        $data['app_uprofile']  = trim($appUprofile);
+        $data['questionid'] = trim($questionid);
+        $data['content'] = trim($content);
+        $data['app_uid'] = intval($appUid);
+        $data['app_uname'] = trim($appUname);
+        $data['app_uavatar'] = trim($appUavatar);
+        $data['app_uprofile'] = trim($appUprofile);
         $data['app_uinterest'] = trim($appUninterest);
-        $data['app_url']       = trim($appUrl);
-        $data['pic_urls']      = '';
+        $data['app_url'] = trim($appUrl);
+        $data['pic_urls'] = '';
 
         //构建权限参数
-        $this->_buildSign($data);
+        $this->buildSign($data);
 
         //发送请求
-        return $this->_sendRequest($this->_host . '/openapi/submit/reply', $data);
+        return $this->sendRequest($this->host . '/openapi/submit/reply', $data);
     }
 
     /**
      * 向百度知道开放平台提交追答（参数必须为utf8编码）
-     * @param string $questionid  必填，要追答的问题id
-     * @param uint   $replyid     必填，要追答的回答id
-     * @param string $content     必填，追答内容
-     * @param uint   $appUid      必填，您站点内的追答用户id
-     * @param string $appUname    必填，您站点内的追答用户名
+     * @param string $questionid 必填，要追答的问题id
+     * @param uint $replyid 必填，要追答的回答id
+     * @param string $content 必填，追答内容
+     * @param uint $appUid 必填，您站点内的追答用户id
+     * @param string $appUname 必填，您站点内的追答用户名
      * @return array(
      *     'errno'  => 0,             本次提交成功与否，0成功，其他值失败
      *     'errmsg' => '',            本次提交的中文提示信息
      * )
      */
-    public function submitRereply($questionid, $replyid, $content, $appUid, $appUname) {
+    public function submitRereply($questionid, $replyid, $content, $appUid, $appUname)
+    {
         $data = array();
-        $data['questionid']    = trim($questionid);
-        $data['replyid']       = intval($replyid);
-        $data['content']       = trim($content);
-        $data['app_uid']       = intval($appUid);
-        $data['app_uname']     = trim($appUname);
+        $data['questionid'] = trim($questionid);
+        $data['replyid'] = intval($replyid);
+        $data['content'] = trim($content);
+        $data['app_uid'] = intval($appUid);
+        $data['app_uname'] = trim($appUname);
 
         //构建权限参数
-        $this->_buildSign($data);
+        $this->buildSign($data);
 
         //发送请求
-        return $this->_sendRequest($this->_host . '/openapi/submit/rereply', $data);
+        return $this->sendRequest($this->host . '/openapi/submit/rereply', $data);
     }
 
     /**
      * 构建安全参数
      * @param $data
      */
-    private function _buildSign(&$data) {
-        $appKey = $this->_appCfg['appkey'];
-        $sk     = $this->_appCfg['securitykey'];
+    private function buildSign(&$data)
+    {
+        $appKey = $this->appCfg['appkey'];
+        $sk = $this->appCfg['securitykey'];
 
-        $qid     = isset($data['questionid']) ? $data['questionid'] : '';
+        $qid = isset($data['questionid']) ? $data['questionid'] : '';
 
         $data['appkey'] = $appKey;
-        $data['sign']   = md5("$sk&$appKey&$qid");
+        $data['sign'] = md5("$sk&$appKey&$qid");
     }
 
     /**
@@ -110,15 +115,16 @@ class Api {
      * @param $url   指定url
      * @param $data  发送的数据
      */
-    private function _sendRequest($url, $data) {
+    private function sendRequest($url, $data)
+    {
         $out = array(
-            'errno'  => 0,
+            'errno' => 0,
             'errmsg' => '',
-            'data'   => array(),
+            'data' => array(),
         );
 
         $postStr = '';
-        foreach ($data as $key=>$value) {
+        foreach ($data as $key => $value) {
             if (is_array($value)) {
                 $value = implode(',', $value);
             }
@@ -133,7 +139,7 @@ class Api {
         curl_setopt($curl, CURLOPT_USERAGENT, 'zhidao_sdk');
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($curl, CURLOPT_TIMEOUT, 15);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Expect: '));    //avoid continue100
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Expect: ')); //avoid continue100
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_FAILONERROR, true);
 
@@ -142,11 +148,10 @@ class Api {
 
         //connect failed
         if ($curlRes === false) {
-            $out['errno']  = 1;
+            $out['errno'] = 1;
             $out['errmsg'] = 'connect failed, error:' . curl_error($curl);
-            $this->_writeLog("connect failed, maybe network is invalid. url[$url] error[" . curl_error($curl) . "]");
-        }
-        else {
+            $this->writeLog("connect failed, maybe network is invalid. url[$url] error[" . curl_error($curl) . "]");
+        } else {
             $out = json_decode($curlRes, true);
         }
 
@@ -161,7 +166,8 @@ class Api {
      * 写log
      * @param $log 日志内容
      */
-    private function _writeLog($log) {
+    private function writeLog($log)
+    {
         if ($this->_config['debug']) {
             echo $log . "<br />";
         }
