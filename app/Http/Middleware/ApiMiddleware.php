@@ -16,7 +16,7 @@ class ApiMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($request->input('key') != Config::get('api.key') || $request->input('token') != Config::get('api.token')) {
+        if ($request->input('key') != \Config::get('api.key') || $request->input('token') != \Config::get('api.token')) {
             return response('Unauthorized.', 401);
         }
 
