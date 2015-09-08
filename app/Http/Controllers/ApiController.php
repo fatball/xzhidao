@@ -7,6 +7,7 @@
  * @version 15/9/1
  */
 namespace App\Http\Controllers;
+use Input;
 
 class ApiController extends Controller
 {
@@ -22,7 +23,7 @@ class ApiController extends Controller
     public function postAsk()
     {
 
-        $data = \Input::all();
+        $data = Input::all();
         $ask = \App\Ask::withTrashed()
             ->where('question_id', $data['question_id'])
             ->get();
@@ -42,7 +43,8 @@ class ApiController extends Controller
      */
     public function postAppend()
     {
-
+        $data = Input::all();
+        \App\Append::create($data);
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
     }
 
@@ -56,7 +58,8 @@ class ApiController extends Controller
      */
     public function postComment()
     {
-
+        $data = Input::all();
+        \App\Comment::create($data);
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
     }
 
@@ -70,7 +73,8 @@ class ApiController extends Controller
      */
     public function postDelete()
     {
-
+        $data = Input::all();
+        \App\Delete::create($data);
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
     }
 
@@ -84,7 +88,8 @@ class ApiController extends Controller
      */
     public function postQuality()
     {
-
+        $data = Input::all();
+        \App\Quality::create($data);
         return response()->json(['errno' => 0, 'errmsg' => 'success']);
     }
 
