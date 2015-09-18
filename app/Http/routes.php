@@ -14,6 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('question/{id}',['as' => '', 'uses' => 'AskController@show']);
 
 //数据对接接口
 Route::group(['prefix' => 'api'], function () {
