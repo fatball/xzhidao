@@ -15,12 +15,16 @@ class Ask extends Model
      * @var string
      */
     protected $table = 'asks';
-    //protected $dateFormat = 'U';
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['question_id', 'title', 'content', 'pictures', 'cid', 'cname', 'anonymous', 'hit_keywords', 'hit_cids', 'lbs_province', 'lbs_city', 'lbs_street', 'create_time', 'appkey', 'appname', 'uid', 'uname'];
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 }

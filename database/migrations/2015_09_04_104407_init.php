@@ -57,7 +57,7 @@ class Init extends Migration
             $table->increments('id');
             $table->string('question_id',32)->unique();
             $table->integer('reply_id')->unsigned()->default(0);
-            $table->integer('tinyInteger')->unsigned()->default(0);
+            $table->integer('evaluate_type')->unsigned()->default(0);
             $table->integer('create_time')->unsigned();
             $table->integer('appkey')->unsigned();
             $table->string('appname');
@@ -89,6 +89,7 @@ class Init extends Migration
         //用户提交的回答
         Schema::create('replies', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('question_id',32);
             $table->integer('reply_id')->unsigned()->default(0);
             $table->string('title');
             $table->text('content');
